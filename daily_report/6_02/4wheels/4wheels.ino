@@ -2,90 +2,95 @@
  * How to test encoder with Arduino
  * url: http://osoyoo.com/?p=30267
  */
-#define outputA 6
-#define outputB 7
-
-#define speedPin 9   //  Front Wheel PWM pin connect Right MODEL-X ENA 
-#define RightMotorDirPin1B  22    //Rear Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
-#define RightMotorDirPin2B  24   //Rear Right Motor direction pin 2 to Right MODEL-X IN2   (K1)                                 
-#define LeftMotorDirPin1 23   // Rear Left Motor direction pin 1 to Right MODEL-X IN3 (K3)
-#define LeftMotorDirPin2 25   // Rear Left Motor direction pin 2 to Right MODEL-X IN4 (K3)
+ 
+#define speedPinRB 9   //Front Wheel PWM pin connect Right MODEL-X ENA 
+#define RightMotorDirpin1B  22    //Rear Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
+#define RightMotorDirpin2B  24   //Rear Right Motor direction pin 2 to Right MODEL-X IN2   (K1)                                 
+#define LeftMotorDirpin1B 46  // Rear Left Motor direction pin 1 to Right MODEL-X IN3 (K3)
+#define LeftMotorDirpin2B 48   // Rear Left Motor direction pin 2 to Right MODEL-X IN4 (K3)
+#define speedPinLB 10   //Front Wheel PWM pin connect Right MODEL-X ENB
 
 #define SPEED  360     //both sides of the motor speed
 
- 
-int counter = 0; 
-int aState;
-int aLastState;  
 const int turntime = 550;
 
+class Wheel
+{
+
+  public:
+  
+    Wheel(byte pin1, byte pin2, byte pin3)
+    {
+      init(pin1, pin2, pin3);
+    }
+
+    void init(byte motorPowerpin1, byte motorPowerpin2, byte speedpin)
+    {
+      /*setup L298N pin mode*/
+      pinMode(motorPowerpin1, OUTPUT); 
+      pinMode(motorPowerpin2, OUTPUT); 
+      pinMode(speedpin, OUTPUT);  
+    }
+  
+   /*motor control*/
+    void Stop(byte pin1, byte pin2);    // Stop
+    void Forward(byte pin1, byte pin2);  // Wheel forwared turn
+    void Backward(byte pin1, byte pin2);
+    void set_Motorspeed(byte speedpin, int Speed);
+
+};
+
 /*motor control*/
-void stop_Stop()    //Stop
+void Wheel::Stop(byte pin1, byte pin2)
 {
-  digitalWrite(RightMotorDirPin1B, LOW);
-  digitalWrite(RightMotorDirPin2B,LOW);
-  set_Motorspeed(0);
+  digitalWrite(pin1,LOW);
+  digitalWrite(pin2,LOW);
+  set_Motorspeed(0, 0);
 }
 
-void FR_fwd()  //front-right wheel forward turn
+void Wheel::Forward(byte pin1, byte pin2)
 {
-  digitalWrite(RightMotorDirPin1B,HIGH);
-  digitalWrite(RightMotorDirPin2B,LOW); 
+  digitalWrite(pin1,HIGH);
+  digitalWrite(pin2,LOW); 
 }
 
-/*set motor speed */
-void set_Motorspeed(int rightFront)
+void Wheel::Backward(byte pin1, byte pin2)
 {
- analogWrite(speedPin,rightFront); 
+  digitalWrite(pin1,LOW);
+  digitalWrite(pin2,HIGH);
+}
+void Wheel::set_Motorspeed(byte speedpin, int _speed)
+{
+ analogWrite(speedpin,_speed); 
 }
 
- void setup() { 
-   pinMode (outputA,INPUT);
-   pinMode (outputB,INPUT);
-   pinMode (LED_BUILTIN, OUTPUT);
 
-   /*setup L298N pin mode*/
-   pinMode(RightMotorDirPin1B, OUTPUT); 
-   pinMode(RightMotorDirPin2B, OUTPUT); 
-   pinMode(speedPin, OUTPUT);  
-    
-   Serial.begin (9600);
-   // Reads the initial state of the outputA
-   aLastState = digitalRead(outputA);   
- } 
- void loop() { 
-   aState = digitalRead(outputA); // Reads the "current" state of the outputA
-   stop_Stop();
-   set_Motorspeed(SPEED);
+// Creating objects globally so that setup() and loop()
+// can access to the objects
+
+Wheel wheelRearR(RightMotorDirpin1B,RightMotorDirpin2B,speedPinRB);
+Wheel wheelRearL(LeftMotorDirpin1B,LeftMotorDirpin2B,speedPinLB);
+
+void setup() 
+{   
+  
+} 
+ void loop() 
+ { 
+     
+   wheelRearL.Stop(LeftMotorDirpin1B,LeftMotorDirpin2B);
+   //wheelRearR.Stop(RightMotorDirpin1B,RightMotorDirpin2B);
+
+   wheelRearL.set_Motorspeed(speedPinLB,SPEED);
+   //wheelRearR.set_Motorspeed(speedPinRB,SPEED);
    
-   FR_fwd(); 
+   wheelRearL.Forward(LeftMotorDirpin1B,LeftMotorDirpin2B);
+   //wheelRearR.Forward(RightMotorDirpin1B,RightMotorDirpin2B); 
+   
    delay(turntime);
    
-   // If the previous and the current state of the outputA are different, that means a Pulse has occured
-   if (aState != aLastState){     
-     // If the outputB state is different to the outputA state, that means the encoder is rotating clockwise
-     if (digitalRead(outputB) != aState) {
-       Serial.print(outputB);
-       Serial.print(aState);
-       //digitalWrite(LED_BUILTIN, HIGH);
-       //delay(1);
-       counter ++;
-       //digitalWrite(LED_BUILTIN, LOW);
-       //delay(1);
-     } else {
-       Serial.print(outputB);
-       Serial.print(aState);
-       //digitalWrite(LED_BUILTIN, HIGH);
-       //delay(1);
-       counter --;
-       //digitalWrite(LED_BUILTIN, LOW);
-       //delay(1);
-     }
-     Serial.print("Position: ");
-     Serial.println(counter);
-   } 
-   aLastState = aState; // Updates the previous state of the outputA with the current state
-   stop_Stop();
+   //wheelRearR.Stop(RightMotorDirpin1B,RightMotorDirpin2B);
+   wheelRearL.Stop(LeftMotorDirpin1B,LeftMotorDirpin2B);
+ 
    delay(turntime * 3);
-   
  }
