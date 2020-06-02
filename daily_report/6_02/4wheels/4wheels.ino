@@ -6,8 +6,11 @@
 #define outputB 7
 
 #define speedPin 9   //  Front Wheel PWM pin connect Right MODEL-X ENA 
-#define RightMotorDirPin1  22    //Front Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
-#define RightMotorDirPin2  24   //Front Right Motor direction pin 2 to Right MODEL-X IN2   (K1)                                 
+#define RightMotorDirPin1B  22    //Rear Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
+#define RightMotorDirPin2B  24   //Rear Right Motor direction pin 2 to Right MODEL-X IN2   (K1)                                 
+#define LeftMotorDirPin1 23   // Rear Left Motor direction pin 1 to Right MODEL-X IN3 (K3)
+#define LeftMotorDirPin2 25   // Rear Left Motor direction pin 2 to Right MODEL-X IN4 (K3)
+
 #define SPEED  360     //both sides of the motor speed
 
  
@@ -19,15 +22,15 @@ const int turntime = 550;
 /*motor control*/
 void stop_Stop()    //Stop
 {
-  digitalWrite(RightMotorDirPin1, LOW);
-  digitalWrite(RightMotorDirPin2,LOW);
+  digitalWrite(RightMotorDirPin1B, LOW);
+  digitalWrite(RightMotorDirPin2B,LOW);
   set_Motorspeed(0);
 }
 
 void FR_fwd()  //front-right wheel forward turn
 {
-  digitalWrite(RightMotorDirPin1,HIGH);
-  digitalWrite(RightMotorDirPin2,LOW); 
+  digitalWrite(RightMotorDirPin1B,HIGH);
+  digitalWrite(RightMotorDirPin2B,LOW); 
 }
 
 /*set motor speed */
@@ -42,8 +45,8 @@ void set_Motorspeed(int rightFront)
    pinMode (LED_BUILTIN, OUTPUT);
 
    /*setup L298N pin mode*/
-   pinMode(RightMotorDirPin1, OUTPUT); 
-   pinMode(RightMotorDirPin2, OUTPUT); 
+   pinMode(RightMotorDirPin1B, OUTPUT); 
+   pinMode(RightMotorDirPin2B, OUTPUT); 
    pinMode(speedPin, OUTPUT);  
     
    Serial.begin (9600);
