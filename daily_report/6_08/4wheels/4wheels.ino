@@ -4,12 +4,18 @@
  */
  
 #define speedPinRB 9   //Front Wheel PWM pin connect Right MODEL-X ENA 
-#definae MtrDirpin1RB  22    //Rear Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
+#define MtrDirpin1RB  22    //Rear Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
 #define MtrDirpin2RB  24   //Rear Right Motor direction pin 2 to Right MODEL-X IN2   (K1)                                 
 #define MtrDirpin1LB 46  // Rear Left Motor direction pin 1 to Right MODEL-X IN3 (K3)
 #define MtrDirpin2LB 48   // Rear Left Motor direction pin 2 to Right MODEL-X IN4 (K3)
 #define speedPinLB 10   //Front Wheel PWM pin connect Right MODEL-X ENB
 
+#define speedPinRF 6   //Front Wheel PWM pin connect Right MODEL-X ENA 
+#define MtrDirpin1RF  28    //Rear Right Motor direction pin 1 to Right MODEL-X IN1  (K1)
+#define MtrDirpin2RF  30   //Rear Right Motor direction pin 2 to Right MODEL-X IN2   (K1)                                 
+#define MtrDirpin1LF 40  // Rear Left Motor direction pin 1 to Right MODEL-X IN3 (K3)
+#define MtrDirpin2LF 42   // Rear Left Motor direction pin 2 to Right MODEL-X IN4 (K3)
+#define speedPinLF 7   //Front Wheel PWM pin connect Right MODEL-X ENB
 
 
 #define SPEEDL 6000    //both sides of the motor speed
@@ -74,6 +80,10 @@ void Wheel::set_Motorspeed(byte speedpin, int _speed)
 Wheel wlRearR(MtrDirpin1RB,MtrDirpin2RB,speedPinRB);
 Wheel wlRearL(MtrDirpin1LB,MtrDirpin2LB,speedPinLB);
 
+Wheel wlFRONTR(MtrDirpin1RF,MtrDirpin2RF,speedPinRF);
+Wheel wlFRONTL(MtrDirpin1LF,MtrDirpin2LF,speedPinLF);
+
+
 void setup() 
 {   
   
@@ -84,17 +94,29 @@ void setup()
    //wlRearL.Stop(MtrDirpin1LB,MtrDirpin2LB);
    //wlRearR.Stop(MtrDirpin1RB,MtrDirpin2RB);
 
+   wlFRONTL.Stop(MtrDirpin1LF,MtrDirpin2LF);
+   wlFRONTR.Stop(MtrDirpin1RF,MtrDirpin2RF);
+
    wlRearL.set_Motorspeed(speedPinLB,SPEEDL);
    wlRearR.set_Motorspeed(speedPinRB,SPEEDL);
+
+   wlFRONTL.set_Motorspeed(speedPinLF,SPEEDL);
+   wlFRONTR.set_Motorspeed(speedPinRF,SPEEDL);
    
    wlRearL.Forward(MtrDirpin1LB,MtrDirpin2LB);
-   wlRearR.Forward(MtrDirpin1RB,MtrDirpin2RB); 
+   wlRearR.Forward(MtrDirpin1RB,MtrDirpin2RB);
+
+   wlFRONTL.Forward(MtrDirpin1LF,MtrDirpin2LF);
+   wlFRONTR.Forward(MtrDirpin1RF,MtrDirpin2RF);
    
    delay(turntime);
    delay(turntime);
    
    wlRearR.Stop(MtrDirpin1RB,MtrDirpin2RB);
    wlRearL.Stop(MtrDirpin1LB,MtrDirpin2LB);
+
+   wlFRONTR.Stop(MtrDirpin1RF,MtrDirpin2RF);
+   wlFRONTL.Stop(MtrDirpin1LF,MtrDirpin2LF);
  
    delay(turntime * 3);
  }
