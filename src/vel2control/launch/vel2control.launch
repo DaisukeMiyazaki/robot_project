@@ -1,0 +1,4 @@
+<launch>
+	<node name="vel_to_controlNode" pkg="vel_to_control" type="vel_to_controlNode" output="screen">
+    </node>
+</launch>

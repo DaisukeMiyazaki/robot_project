@@ -1,0 +1,8 @@
+prefix=/home/daisuke/catkin_ws/install
+
+Name: visRobot
+Description: Description of visRobot
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

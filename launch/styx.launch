@@ -1,0 +1,12 @@
+<launch>
+   <!-- Bridge ? -->
+   <!--include file="$(find styx)/launch/server.launch"-->
+   
+   <!-- Arduino to Jetson communication node-->
+   <include file="$(find arduino_pkg)/launch/arduino_to_serial.launch"/>
+
+   <!-- read motor encoder and convert to odometry node-->
+   <!--include file="$(find count_to_odom)/launch/count_to_odom.launch"-->
+   
+   <include file="$(find yadwigha_2dnav)/yadwigha.launch"/>
+</launch>

@@ -1,0 +1,1 @@
+/usr/local/cuda/bin/nvcc    -Xcompiler=-fPIC -Wno-deprecated-gpu-targets -shared -dlink CMakeFiles/camera_detection.dir/src/main.cpp.o CMakeFiles/camera_detection.dir/src/camera_detection_generated_computation.cu.o -o CMakeFiles/camera_detection.dir/cmake_device_link.o  -L/usr/local/cuda/targets/aarch64-linux/lib/stubs  -L/usr/local/cuda/targets/aarch64-linux/lib 

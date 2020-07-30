@@ -1,0 +1,8 @@
+prefix=/home/daisuke/catkin_ws/devel
+
+Name: rospackage_test
+Description: Description of rospackage_test
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 

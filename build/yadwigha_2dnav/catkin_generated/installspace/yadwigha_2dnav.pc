@@ -1,0 +1,8 @@
+prefix=/home/daisuke/catkin_ws/install
+
+Name: yadwigha_2dnav
+Description: Description of yadwigha_2dnav
+Version: 0.0.0
+Cflags: 
+Libs: -L${prefix}/lib 
+Requires: 
